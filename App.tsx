@@ -8,10 +8,11 @@
 import React from 'react';
 import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { navigationRef } from './src/navigators/RootNavigation';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import MainNavigator from './src/navigators/MainNavigator.tsx';
-import { AuthProvider } from './src/context/AuthContext.ts';
+import { PaperProvider } from 'react-native-paper';
+import MainNavigator from './src/navigators/MainNavigator';
+import { AuthProvider } from './src/context/AuthContext';
+import { navigationRef } from './src/navigators/RootNavigation';
 
 function NavigatorComponent() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -36,9 +37,11 @@ function NavigatorComponent() {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <NavigatorComponent />
-    </AuthProvider>
+    <PaperProvider>
+      <AuthProvider>
+        <NavigatorComponent />
+      </AuthProvider>
+    </PaperProvider>
   );
 };
 export default App;
