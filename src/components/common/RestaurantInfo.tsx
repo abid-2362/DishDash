@@ -1,45 +1,53 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Avatar, Card, Button, Text } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 import { Restaurant } from '../../types';
 import { placeHolderRestaurant } from '../../data/dummy.ts';
+import styled from 'styled-components/native';
+
+const Info = styled.View`
+  padding: ${props => props.theme.space[3]};
+`;
+const Address = styled.Text`
+  font-family: ${props => props.theme.fonts.body};
+  font-size: ${props => props.theme.fontSizes.caption};
+`;
+const Title = styled.Text`
+  color: ${props => props.theme.colors.ui.primary};
+  font-family: ${props => props.theme.fonts.heading};
+  font-weight: ${props => props.theme.fontWeights.bold};
+  font-size: ${props => props.theme.fontSizes.body};
+`;
+
+const RestaurantCard = styled(Card)`
+  background-color: ${props => props.theme.colors.bg.primary};
+`;
+const RestaurantCardCover = styled(Card.Cover)`
+  padding: ${props => props.theme.space[3]};
+  background-color: ${props => props.theme.colors.bg.primary};
+`;
 
 type RestaurantInfoProps = {
   restaurant: Restaurant;
 };
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+
+const StyledView = styled.View`
+  flex: 1;
+  //background: white;
+`;
+
 const RestaurantInfo = ({ restaurant = placeHolderRestaurant }: RestaurantInfoProps) => {
   const { name, icon, photos, address, isOpenNow, rating, isClosedTemporarily } = restaurant;
   return (
-    <View style={styles.component}>
-      <Card style={styles.card}>
-        {/*<Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent} />*/}
-        <Card.Cover source={{ uri: photos[0] }} style={styles.cover} />
-        <Card.Content>
-          <Text variant="titleLarge">Card title</Text>
-          <Text variant="bodyMedium">Card content</Text>
-        </Card.Content>
-        <Text style={styles.title}>{name}</Text>
-        {/*<Card.Actions>*/}
-        {/*  <Button>Cancel</Button>*/}
-        {/*  <Button>Ok</Button>*/}
-        {/*</Card.Actions>*/}
-      </Card>
-    </View>
+    <StyledView>
+      <RestaurantCard elevation={5}>
+        <RestaurantCardCover source={{ uri: photos[0] }} />
+        <Info>
+          <Title>{name}</Title>
+          <Address>{address}</Address>
+        </Info>
+      </RestaurantCard>
+    </StyledView>
   );
 };
-
-const styles = StyleSheet.create({
-  component: {
-    flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
-  card: {
-    backgroundColor: 'white',
-  },
-  cover: { padding: 20, backgroundColor: 'white' },
-  title: { padding: 16 },
-});
 
 export default RestaurantInfo;

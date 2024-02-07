@@ -10,7 +10,8 @@ type MealsNavigatorProps = {};
 const RestaurantsNavigator = ({}: MealsNavigatorProps) => (
   <RestaurantsStack.Navigator
     // change background color to white
-    screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'white' } }}
+    // screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'red' } }}
+    screenOptions={{ headerShown: false }}
     initialRouteName={'Restaurants'}>
     <RestaurantsStack.Screen
       name={'Restaurants'}

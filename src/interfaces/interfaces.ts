@@ -1,3 +1,5 @@
+import { ThemeType } from '../theme';
+
 export type emptyFunction = () => void;
 export type optionalCallbackFunction = (onSuccess?: emptyFunction) => void;
 
@@ -12,4 +14,8 @@ export interface IAuthContext {
   signout: emptyFunction;
   clearErrorMessage: emptyFunction;
   tryLocalSignin: emptyFunction;
+}
+
+export interface StyledProps {
+  theme: ThemeType;
 }
