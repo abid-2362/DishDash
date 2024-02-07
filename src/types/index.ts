@@ -5,9 +5,12 @@ export type RestaurantsParamsList = {
 };
 
 export type TabsParamsList = {
-  MealsNavigator: NavigatorScreenParams<RestaurantsParamsList>;
-  Settings: undefined;
+  RestaurantsNavigator: NavigatorScreenParams<RestaurantsParamsList>;
+  MapScreen: undefined;
+  SettingsScreen: undefined;
 };
+
+export type RootParamsList = RestaurantsParamsList & TabsParamsList;
 
 export type ActionType<PayloadType> = {
   type: string;

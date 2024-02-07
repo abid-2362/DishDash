@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Searchbar } from 'react-native-paper';
-import RestaurantInfo from '../components/common/RestaurantInfo.tsx';
+import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
 import { placeHolderRestaurant } from '../data/dummy.ts';
-import styled from 'styled-components';
-import { StylesProps } from '../interfaces/interfaces.ts';
+import styled from 'styled-components/native';
 
 const SearchContainer = styled.View`
-  padding: ${(props: StylesProps) => props.theme.space[3]};
+  padding: ${props => props.theme.space[3]};
 `;
 
 type RestaurantsScreenProps = {};
 
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
+  const [searchQuery, setSearchQuery] = useState('');
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -29,16 +29,21 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.searchBarContainer}>
+      <SearchContainer>
         <Searchbar
           placeholder="Search"
-          // onChangeText={setSearchQuery}
-          // value={searchQuery}
+          onChangeText={setSearchQuery}
+          value={searchQuery}
           style={styles.searchBar}
         />
-      </View>
+      </SearchContainer>
       <View style={styles.list}>
-        <RestaurantInfo restaurant={placeHolderRestaurant} />
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={[{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]}
+          renderItem={() => <SingleRestaurantCard restaurant={placeHolderRestaurant} />}
+        />
       </View>
     </View>
   );

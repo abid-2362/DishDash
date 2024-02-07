@@ -4,26 +4,53 @@ import SettingsScreen from '../screens/SettingsScreen.tsx';
 import RestaurantsNavigator from './RestaurantsNavigator.tsx';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TabsParamsList } from '../types';
+import { RouteProp } from '@react-navigation/native';
+import MapScreen from '../screens/MapScreen.tsx';
 
 const Tab = createBottomTabNavigator<TabsParamsList>();
 
+const TAB_ICON = {
+  RestaurantsNavigator: 'restaurant',
+  MapScreen: 'map',
+  SettingsScreen: 'settings',
+};
+
+const createScreenOptions = ({ route }: { route: RouteProp<TabsParamsList> }) => {
+  const iconName = TAB_ICON[route.name];
+  return {
+    headerShown: false,
+    tabBarActiveTintColor: 'orange',
+    tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+      <Icon name={iconName} size={size} color={color} />
+    ),
+  };
+};
+
 function BottomTabsNavigator() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator screenOptions={createScreenOptions}>
       <Tab.Screen
-        name={'MealsNavigator'}
+        name={'RestaurantsNavigator'}
         component={RestaurantsNavigator}
         options={{
-          title: 'Meals Navigator',
-          tabBarIcon: () => <Icon name={'add'} />,
+          title: 'Restaurants Navigator',
+          // tabBarIcon: () => <Icon name={'add'} />,
         }}
       />
       <Tab.Screen
-        name="Settings"
+        name="MapScreen"
+        component={MapScreen}
+        options={{
+          title: 'Map',
+          // tabBarIcon: () => <Icon name={'settings-sharp'} />,
+        }}
+      />
+      <Tab.Screen
+        name="SettingsScreen"
         component={SettingsScreen}
         options={{
           title: 'Settings',
-          tabBarIcon: () => <Icon name={'settings-sharp'} />,
+          // tabBarIcon: () => <Icon name={'settings-sharp'} />,
         }}
       />
     </Tab.Navigator>

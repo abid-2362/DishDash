@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
-import Spacer from '../components/Spacer.tsx';
-import { emptyFunction, openAppSettings } from '../utils/utils.ts';
+import Spacer from '../components/common/Spacer';
+import { emptyFunction, openAppSettings } from '../utils/utils';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface IAccountScreenProps {}
