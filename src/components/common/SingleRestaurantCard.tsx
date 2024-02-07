@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Card } from 'react-native-paper';
 import { Restaurant } from '../../types';
 import { placeHolderRestaurant } from '../../data/dummy.ts';
 import styled from 'styled-components/native';
@@ -7,7 +6,6 @@ import { SvgXml } from 'react-native-svg';
 import star from '../../assets/star';
 import open from '../../assets/open';
 // import { Text } from 'react-native-paper';
-import { Image } from 'react-native';
 import Spacer from './Spacer.tsx';
 import { Text } from './Text.tsx';
 import {

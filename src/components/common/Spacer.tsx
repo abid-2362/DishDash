@@ -30,8 +30,8 @@ const Spacer: React.FC<SpacerProps> = ({ size = 'medium', position = 'bottom', c
     return spacerStyle;
   };
 
-  const getSize = (size: 'small' | 'medium' | 'large'): number => {
-    switch (size) {
+  const getSize = (spaceSize: 'small' | 'medium' | 'large'): number => {
+    switch (spaceSize) {
       case 'small':
         return Number(theme.space[1].replace('px', ''));
       case 'medium':
