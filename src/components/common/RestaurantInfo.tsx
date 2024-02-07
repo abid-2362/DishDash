@@ -3,6 +3,8 @@ import { Card } from 'react-native-paper';
 import { Restaurant } from '../../types';
 import { placeHolderRestaurant } from '../../data/dummy.ts';
 import styled from 'styled-components/native';
+import { SvgXml } from 'react-native-svg';
+import star from '../../assets/star';
 
 const Info = styled.View`
   padding: ${props => props.theme.space[3]};
@@ -35,14 +37,29 @@ const StyledView = styled.View`
   //background: white;
 `;
 
+const Rating = styled.View`
+  flex-direction: row;
+  padding-top: ${props => props.theme.space[2]};
+  padding-bottom: ${props => props.theme.space[2]};
+`;
+
 const RestaurantInfo = ({ restaurant = placeHolderRestaurant }: RestaurantInfoProps) => {
   const { name, icon, photos, address, isOpenNow, rating, isClosedTemporarily } = restaurant;
+
+  const ratingArray = Array.from(new Array(Math.floor(rating)));
+
   return (
     <StyledView>
       <RestaurantCard elevation={5}>
         <RestaurantCardCover source={{ uri: photos[0] }} />
         <Info>
           <Title>{name}</Title>
+          <Rating>
+            {ratingArray.map(() => (
+              <SvgXml xml={star} width="20" height="20" />
+            ))}
+          </Rating>
+
           <Address>{address}</Address>
         </Info>
       </RestaurantCard>
