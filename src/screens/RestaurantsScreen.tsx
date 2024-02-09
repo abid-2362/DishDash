@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
-import { Searchbar } from 'react-native-paper';
+import { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
 import { placeHolderRestaurant } from '../data/dummy.ts';
 import styled from 'styled-components/native';
+import { RestaurantsContext } from '../context/RestaurantsContext.ts';
 
 const SearchContainer = styled.View`
   padding: ${props => props.theme.space[3]};
@@ -14,12 +15,14 @@ const SearchContainer = styled.View`
 type RestaurantsScreenProps = {};
 
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
+  const { state, fetchRestaurants } = useContext(RestaurantsContext);
   const [searchQuery, setSearchQuery] = useState('');
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
-      // Do something
+      // console.log('RestaurantsScreen.tsx', 'fetching restaurants');
+      fetchRestaurants();
     }
 
     return () => {
@@ -27,6 +30,13 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
     };
   }, [isFocused]);
 
+  if (state.isLoading) {
+    return (
+      <View style={styles.screen}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
   return (
     <View style={styles.screen}>
       <SearchContainer>
@@ -41,8 +51,8 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
         <FlatList
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          data={[{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }]}
-          renderItem={() => <SingleRestaurantCard restaurant={placeHolderRestaurant} />}
+          data={state.restaurants}
+          renderItem={({ item }) => <SingleRestaurantCard key={item.name} restaurant={item} />}
         />
       </View>
     </View>

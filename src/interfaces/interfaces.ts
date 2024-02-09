@@ -1,4 +1,5 @@
 import { ThemeType } from '../theme';
+import { Restaurant } from '../types';
 
 export type emptyFunction = () => void;
 export type optionalCallbackFunction = (onSuccess?: emptyFunction) => void;
@@ -14,6 +15,16 @@ export interface IAuthContext {
   signout: emptyFunction;
   clearErrorMessage: emptyFunction;
   tryLocalSignin: emptyFunction;
+}
+
+export interface IRestaurantsState {
+  restaurants: Restaurant[];
+  isLoading: boolean;
+  error: string;
+}
+export interface IRestaurantsContext {
+  state: IRestaurantsState;
+  fetchRestaurants: emptyFunction;
 }
 
 export interface StyledProps {

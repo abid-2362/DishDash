@@ -15,6 +15,7 @@ import { AuthProvider } from './src/context/AuthContext';
 import { navigationRef } from './src/navigators/RootNavigation';
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './src/theme';
+import { RestaurantsProvider } from './src/context/RestaurantsContext.ts';
 
 function NavigatorComponent() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -42,7 +43,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <PaperProvider>
         <AuthProvider>
-          <NavigatorComponent />
+          <RestaurantsProvider>
+            <NavigatorComponent />
+          </RestaurantsProvider>
         </AuthProvider>
       </PaperProvider>
     </ThemeProvider>

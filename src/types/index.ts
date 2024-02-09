@@ -1,4 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
+import toronto from '../data/mock/toronto.json';
 
 export type RestaurantsParamsList = {
   Restaurants: undefined;
@@ -21,8 +22,10 @@ export type Restaurant = {
   name: string;
   icon: string;
   photos: string[];
-  address: string;
+  // address: string;
   isOpenNow: boolean;
   rating: number;
   isClosedTemporarily: boolean;
 };
+const rResult = toronto.results[0];
+export type RawRestaurant = typeof rResult;
