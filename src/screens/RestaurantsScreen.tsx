@@ -15,7 +15,7 @@ const SearchContainer = styled.View`
 type RestaurantsScreenProps = {};
 
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
-  const { state, fetchRestaurants } = useContext(RestaurantsContext);
+  const { state, fetchRestaurants, resetRestaurants } = useContext(RestaurantsContext);
   const [searchQuery, setSearchQuery] = useState('');
   const isFocused = useIsFocused();
 
@@ -26,17 +26,10 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
     }
 
     return () => {
-      // unsub or cleanup
+      resetRestaurants();
     };
   }, [isFocused]);
 
-  if (state.isLoading) {
-    return (
-      <View style={styles.screen}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
   return (
     <View style={styles.screen}>
       <SearchContainer>
@@ -48,12 +41,25 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
         />
       </SearchContainer>
       <View style={styles.list}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          data={state.restaurants}
-          renderItem={({ item }) => <SingleRestaurantCard key={item.name} restaurant={item} />}
-        />
+        {state.isLoading ? (
+          <View
+            style={[
+              styles.screen,
+              {
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+            ]}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={state.restaurants}
+            renderItem={({ item }) => <SingleRestaurantCard key={item.name} restaurant={item} />}
+          />
+        )}
       </View>
     </View>
   );

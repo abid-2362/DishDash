@@ -25,6 +25,7 @@ export interface IRestaurantsState {
 export interface IRestaurantsContext {
   state: IRestaurantsState;
   fetchRestaurants: emptyFunction;
+  resetRestaurants: emptyFunction;
 }
 
 export interface StyledProps {

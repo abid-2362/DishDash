@@ -47,6 +47,10 @@ const clearErrorMessage = (dispatch: any) => () => {
 const setIsLoading = (dispatch: any, isLoading: boolean) => {
   dispatch({ type: SET_LOADING, payload: isLoading });
 };
+
+const resetRestaurants = (dispatch: any) => () => {
+  dispatch({ type: SET_RESTURANTS, payload: [] });
+};
 const fetchRestaurants = (dispatch: any) => async () => {
   try {
     setIsLoading(dispatch, true);
@@ -70,7 +74,7 @@ const fetchRestaurants = (dispatch: any) => async () => {
 
 const dataContext = createDataContext(
   restaurantsReducer,
-  { fetchRestaurants, clearErrorMessage },
+  { fetchRestaurants, clearErrorMessage, resetRestaurants },
   initialState,
 );
 
