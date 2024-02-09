@@ -1,5 +1,5 @@
 // Restaurants related api requests.
-import { RawRestaurant } from '../types';
+import { RawRestaurant, Restaurant } from '../types';
 import camelize from 'camelize';
 import { mockImages, mocks } from '../data/mock';
 import random from 'lodash/random';
@@ -14,6 +14,7 @@ const restaurantsTransform = (results: RawRestaurant[]) => {
       isOpenNow: restaurant.opening_hours && restaurant.opening_hours.open_now,
       isClosedTemporarily: restaurant.business_status === 'CLOSED_TEMPORARILY',
       photos,
+      address: restaurant.vicinity,
     };
   });
   return camelize(mappedResults);
