@@ -1,18 +1,17 @@
-import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { LocationContext } from '../../context/LocationContext.ts';
 import { RestaurantsContext } from '../../context/RestaurantsContext.ts';
 import { Text } from '../common/Text.tsx';
-import { getLatLngStringFromLocation } from '../../api/locations.ts';
 
 const Search = styled(Searchbar)`
   border-radius: ${props => props.theme.space[1]};
+  background-color: ${props => props.theme.colors.bg.primary};
 `;
-type SearchRestaurantProps = {};
-const SearchRestaurant = ({}: SearchRestaurantProps) => {
+type MapSearchProps = {};
+const MapSearch = ({}: MapSearchProps) => {
   const { state, onSearch } = useContext(LocationContext);
   const { fetchRestaurants, resetRestaurants } = useContext(RestaurantsContext);
   const [searchQuery, setSearchQuery] = useState<string>(state.keyword);
@@ -22,30 +21,23 @@ const SearchRestaurant = ({}: SearchRestaurantProps) => {
   };
 
   useEffect(() => {
-    onSearch('San Francisco');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     setSearchQuery(state.keyword);
-    onSearch(state.keyword);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.keyword]);
 
   useEffect(() => {
     // fetch restaurants everytime the location changes
-    fetchRestaurants(getLatLngStringFromLocation(state.location));
+    fetchRestaurants(state.location);
 
     return () => {
       resetRestaurants();
     };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.location]);
   return (
     <>
       <Search
         placeholder="Search"
+        icon={'map'}
         onChangeText={setSearchQuery}
         value={searchQuery}
         style={styles.searchBar}
@@ -68,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchRestaurant;
+export default MapSearch;

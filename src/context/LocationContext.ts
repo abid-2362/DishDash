@@ -1,16 +1,14 @@
 import * as React from 'react';
 import createDataContext from './createDataContext.tsx';
-import { navigate } from '../navigators/RootNavigation.ts';
 import * as locationAPI from '../api/locations.ts';
-import { ActionType } from '../types';
-import { Alert } from 'react-native';
+import { ActionType, Location } from '../types';
 
-export type LatLong = { lat: number; lng: number };
+// export type ViewPort = LatLong
 
 interface ILocationState {
   errorMessage: string;
   keyword: string;
-  location: string;
+  location: Location;
   isLoading: boolean;
 }
 
@@ -23,7 +21,20 @@ interface ILocationContext {
 const initialState: ILocationState = {
   errorMessage: '',
   keyword: '',
-  location: '',
+  location: {
+    lat: 0,
+    lng: 0,
+    viewport: {
+      northeast: {
+        lat: 0,
+        lng: 0,
+      },
+      southwest: {
+        lat: 0,
+        lng: 0,
+      },
+    },
+  },
   isLoading: false,
 };
 
@@ -71,7 +82,7 @@ const clearErrorMessage = (dispatch: React.Dispatch<ActionType<any>>) => () => {
 };
 
 // function to setLocations
-const setLocation = (dispatch: React.Dispatch<ActionType<any>>) => (location: string) => {
+const setLocation = (dispatch: React.Dispatch<ActionType<Location>>) => (location: Location) => {
   dispatch({ type: SET_LOCATION, payload: location });
 };
 

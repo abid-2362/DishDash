@@ -1,6 +1,5 @@
 import createDataContext from './createDataContext.tsx';
 import { IRestaurantsContext, IRestaurantsState } from '../interfaces/interfaces.ts';
-import { navigate } from '../navigators/RootNavigation.ts';
 import * as restaurantApi from '../api/restaurants.ts';
 
 const initialState: IRestaurantsState = {

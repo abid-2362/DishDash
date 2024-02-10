@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabsNavigator from './BottomTabsNavigator.tsx';
-import { AuthContext } from '../context/AuthContext.ts';
+// import { AuthContext } from '../context/AuthContext.ts';
 import ResolveAuthScreen from '../screens/ResolveAuthScreen';
 
 const Stack = createNativeStackNavigator();

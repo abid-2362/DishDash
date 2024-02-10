@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, ScrollView, Button } from 'react-native';
-import { Restaurant, RestaurantsParamsList } from '../types';
+import { ScrollView } from 'react-native';
+import { Appbar, List } from 'react-native-paper';
+import { RestaurantsParamsList } from '../types';
 import { Screen } from '../components/common/styles/CommonStyles.ts';
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
-import { IconButton, List, Appbar } from 'react-native-paper';
 
 type RestaurantDetailsScreenProps = {};
 const RestaurantDetailsScreen = ({}: RestaurantDetailsScreenProps) => {
@@ -22,7 +22,6 @@ const RestaurantDetailsScreen = ({}: RestaurantDetailsScreenProps) => {
         />
         <Appbar.Content title={restaurant.name} />
       </Appbar>
-      {/*<IconButton icon={'chevron-left'} onPress={() => navigation.goBack()} />*/}
       <SingleRestaurantCard restaurant={restaurant} />
       <ScrollView>
         <List.Accordion

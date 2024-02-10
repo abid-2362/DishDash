@@ -28,6 +28,20 @@ export type Restaurant = {
   isOpenNow: boolean;
   rating: number;
   isClosedTemporarily: boolean;
+  geometry: Geometry;
 };
 const rResult = toronto.results[0];
 export type RawRestaurant = typeof rResult;
+
+export type LatLong = { lat: number; lng: number };
+export type Geometry = {
+  location: Location;
+};
+export type Location = {
+  lat: number;
+  lng: number;
+  viewport: {
+    northeast: LatLong;
+    southwest: LatLong;
+  };
+};
