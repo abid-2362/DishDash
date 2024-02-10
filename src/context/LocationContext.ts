@@ -3,6 +3,7 @@ import createDataContext from './createDataContext.tsx';
 import { navigate } from '../navigators/RootNavigation.ts';
 import * as locationAPI from '../api/locations.ts';
 import { ActionType } from '../types';
+import { Alert } from 'react-native';
 
 export type LatLong = { lat: number; lng: number };
 
@@ -80,6 +81,7 @@ const onSearch = (dispatch: React.Dispatch<ActionType<any>>) => async (searchTer
   }
   dispatch({ type: SET_LOADING, payload: true });
   dispatch({ type: SET_KEYWORD, payload: searchTerm });
+  clearErrorMessage(dispatch)();
   try {
     // locationRequest
     const result = await locationAPI.fetchLocation(searchTerm.toLowerCase());
@@ -95,6 +97,7 @@ const onSearch = (dispatch: React.Dispatch<ActionType<any>>) => async (searchTer
       err = String(error);
       console.log('LocationContext.ts', 'error', err);
     }
+    // Alert.alert('Error', err);
     dispatch({ type: SET_LOADING, payload: false });
     dispatch({ type: ADD_ERROR, payload: err });
   }

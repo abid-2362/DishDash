@@ -17,7 +17,7 @@ export const fetchLocation = (searchTerm: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const locationMock = locations[searchTerm as keyof RawLocations];
     if (!locationMock) {
-      return reject('Not found');
+      return reject('No location found');
     }
     const transformedLocation = locationTransform(locationMock);
 

@@ -5,7 +5,6 @@ import styled from 'styled-components/native';
 import { SvgXml } from 'react-native-svg';
 import star from '../../assets/star';
 import open from '../../assets/open';
-// import { Text } from 'react-native-paper';
 import Spacer from './Spacer.tsx';
 import { Text } from './Text.tsx';
 import {
@@ -45,7 +44,7 @@ const SingleRestaurantCard = ({
         <RatingContainer>
           <Rating>
             {ratingArray.map((item, index) => (
-              <SvgXml key={index} xml={star} width="20" height="20" />
+              <SvgXml key={`star-${name}-${index}`} xml={star} width="20" height="20" />
             ))}
             {ratingArray.length < 1 && <Text variant={'caption'}>Not Rated</Text>}
           </Rating>

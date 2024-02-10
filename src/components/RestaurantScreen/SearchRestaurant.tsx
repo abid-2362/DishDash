@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { LocationContext } from '../../context/LocationContext.ts';
 import { RestaurantsContext } from '../../context/RestaurantsContext.ts';
+import { Text } from '../common/Text.tsx';
 
 const Search = styled(Searchbar)`
   border-radius: ${props => props.theme.space[1]};
@@ -36,13 +37,16 @@ const SearchRestaurant = ({}: SearchRestaurantProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.location]);
   return (
-    <Search
-      placeholder="Search"
-      onChangeText={setSearchQuery}
-      value={searchQuery}
-      style={styles.searchBar}
-      onSubmitEditing={searchHandler}
-    />
+    <>
+      <Search
+        placeholder="Search"
+        onChangeText={setSearchQuery}
+        value={searchQuery}
+        style={styles.searchBar}
+        onSubmitEditing={searchHandler}
+      />
+      {Boolean(state.errorMessage) && <Text variant={'error'}>{state.errorMessage}</Text>}
+    </>
   );
 };
 
