@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Restaurant, RestaurantsParamsList, RootParamsList } from '../../types';
+import { Restaurant, RestaurantsParamsList } from '../../types';
 import { placeHolderRestaurant } from '../../data/dummy.ts';
 import styled from 'styled-components/native';
 import { SvgXml } from 'react-native-svg';
@@ -17,6 +17,7 @@ import {
   RestaurantCardCover,
 } from './styles/SingleRestaurantCardStyles.ts';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import FavoriteFAB from './FavoriteFAB.tsx';
 
 export type SingleRestaurantCardProps = {
   restaurant: Restaurant;
@@ -42,6 +43,7 @@ const SingleRestaurantCard = ({
   return (
     <RestaurantCard elevation={1}>
       <RestaurantCardCover source={{ uri: photos[0] }} />
+      <FavoriteFAB restaurant={restaurant} />
       <Info>
         <Text variant="body">{name}</Text>
         <RatingContainer>

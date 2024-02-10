@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Screen } from '../components/common/styles/CommonStyles.ts';
 import MapView, { Callout, Marker } from 'react-native-maps';
 import styled from 'styled-components/native';
@@ -65,13 +65,5 @@ const MapScreen = ({}: MapScreenProps) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default MapScreen;
