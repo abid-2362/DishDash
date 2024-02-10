@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "podinstall": "cd ios && arch -arm64 bundle exec pod install && cd .."
+    "podinstall": "cd ios && arch -arm64 bundle exec pod install && cd ..",
+    "dev": "yarn podinstall && yarn ios"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.11",

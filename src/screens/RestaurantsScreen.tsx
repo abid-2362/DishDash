@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
-import { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Searchbar } from 'react-native-paper';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { useContext } from 'react';
+import { ActivityIndicator } from 'react-native-paper';
 import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
-import { placeHolderRestaurant } from '../data/dummy.ts';
 import styled from 'styled-components/native';
 import { RestaurantsContext } from '../context/RestaurantsContext.ts';
 import SearchRestaurant from '../components/RestaurantScreen/SearchRestaurant.tsx';
+import { RestaurantsParamsList } from '../types';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 const Screen = styled.View`
   flex: 1;
@@ -28,19 +28,8 @@ const ListContainer = styled.View`
 type RestaurantsScreenProps = {};
 
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
-  const { state, fetchRestaurants, resetRestaurants } = useContext(RestaurantsContext);
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    if (isFocused) {
-      // console.log('RestaurantsScreen.tsx', 'fetching restaurants');
-      // fetchRestaurants();
-    }
-
-    return () => {
-      // resetRestaurants();
-    };
-  }, [isFocused]);
+  const { state } = useContext(RestaurantsContext);
+  const navigation: NavigationProp<RestaurantsParamsList> = useNavigation();
 
   return (
     <Screen>
@@ -57,20 +46,17 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             data={state.restaurants}
-            renderItem={({ item }) => <SingleRestaurantCard key={item.name} restaurant={item} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('RestaurantDetails', { restaurant: item })}>
+                <SingleRestaurantCard key={item.name} restaurant={item} />
+              </TouchableOpacity>
+            )}
           />
         )}
       </ListContainer>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
-});
 
 export default RestaurantsScreen;

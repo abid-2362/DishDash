@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Restaurant } from '../../types';
+import { Restaurant, RestaurantsParamsList, RootParamsList } from '../../types';
 import { placeHolderRestaurant } from '../../data/dummy.ts';
 import styled from 'styled-components/native';
 import { SvgXml } from 'react-native-svg';
@@ -16,6 +16,7 @@ import {
   RestaurantCard,
   RestaurantCardCover,
 } from './styles/SingleRestaurantCardStyles.ts';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 export type SingleRestaurantCardProps = {
   restaurant: Restaurant;
@@ -29,7 +30,9 @@ const Rating = styled.View`
 const SingleRestaurantCard = ({
   restaurant = placeHolderRestaurant,
 }: SingleRestaurantCardProps) => {
-  const { name, icon, photos, address, isOpenNow, rating, isClosedTemporarily } = restaurant;
+  const { id, name, icon, photos, address, isOpenNow, rating, isClosedTemporarily } = restaurant;
+
+  const navigation: NavigationProp<RestaurantsParamsList> = useNavigation();
 
   let ratingArray = [];
   if (rating) {
@@ -44,7 +47,7 @@ const SingleRestaurantCard = ({
         <RatingContainer>
           <Rating>
             {ratingArray.map((item, index) => (
-              <SvgXml key={`star-${name}-${index}`} xml={star} width="20" height="20" />
+              <SvgXml key={`star-${id}-${index}`} xml={star} width="20" height="20" />
             ))}
             {ratingArray.length < 1 && <Text variant={'caption'}>Not Rated</Text>}
           </Rating>

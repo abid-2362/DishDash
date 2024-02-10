@@ -1,6 +1,7 @@
 import { Restaurant } from '../types';
 
 export const placeHolderRestaurant: Restaurant = {
+  id: '23',
   name: 'Nice Restaurant',
   icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png',
   photos: [

@@ -3,6 +3,7 @@ import toronto from '../data/mock/toronto.json';
 
 export type RestaurantsParamsList = {
   Restaurants: undefined;
+  RestaurantDetails: { restaurant: Restaurant };
 };
 
 export type TabsParamsList = {
@@ -19,6 +20,7 @@ export type ActionType<PayloadType> = {
 };
 
 export type Restaurant = {
+  id: string;
   name: string;
   icon: string;
   photos: string[];

@@ -15,6 +15,7 @@ const restaurantsTransform = (results: RawRestaurant[]) => {
       isClosedTemporarily: restaurant.business_status === 'CLOSED_TEMPORARILY',
       photos,
       address: restaurant.vicinity,
+      id: restaurant.place_id,
     };
   });
   return camelize(mappedResults);
