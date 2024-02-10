@@ -51,13 +51,13 @@ const setIsLoading = (dispatch: any, isLoading: boolean) => {
 const resetRestaurants = (dispatch: any) => () => {
   dispatch({ type: SET_RESTURANTS, payload: [] });
 };
-const fetchRestaurants = (dispatch: any) => async () => {
+const fetchRestaurants = (dispatch: any) => async (location: string) => {
   try {
     setIsLoading(dispatch, true);
     clearErrorMessage(dispatch)();
 
     setTimeout(async () => {
-      const response = await restaurantApi.fetchRestaurants();
+      const response = await restaurantApi.fetchRestaurants(location);
       dispatch({ type: SET_RESTURANTS, payload: response });
       setIsLoading(dispatch, false);
     }, 1000);

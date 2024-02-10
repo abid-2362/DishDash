@@ -32,7 +32,10 @@ const SingleRestaurantCard = ({
 }: SingleRestaurantCardProps) => {
   const { name, icon, photos, address, isOpenNow, rating, isClosedTemporarily } = restaurant;
 
-  const ratingArray = Array.from(new Array(Math.floor(rating)));
+  let ratingArray = [];
+  if (rating) {
+    ratingArray = Array.from(new Array(Math.floor(rating)));
+  }
 
   return (
     <RestaurantCard elevation={1}>
@@ -44,6 +47,7 @@ const SingleRestaurantCard = ({
             {ratingArray.map((item, index) => (
               <SvgXml key={index} xml={star} width="20" height="20" />
             ))}
+            {ratingArray.length < 1 && <Text variant={'caption'}>Not Rated</Text>}
           </Rating>
           <OpenContainer>
             {isClosedTemporarily && <Text variant={'error'}> CLOSED TEMPORARILY </Text>}

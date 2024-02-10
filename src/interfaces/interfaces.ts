@@ -24,7 +24,7 @@ export interface IRestaurantsState {
 }
 export interface IRestaurantsContext {
   state: IRestaurantsState;
-  fetchRestaurants: emptyFunction;
+  fetchRestaurants: (location: string) => void;
   resetRestaurants: emptyFunction;
 }
 

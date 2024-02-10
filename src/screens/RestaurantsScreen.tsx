@@ -7,51 +7,51 @@ import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx'
 import { placeHolderRestaurant } from '../data/dummy.ts';
 import styled from 'styled-components/native';
 import { RestaurantsContext } from '../context/RestaurantsContext.ts';
+import SearchRestaurant from '../components/RestaurantScreen/SearchRestaurant.tsx';
 
+const Screen = styled.View`
+  flex: 1;
+`;
+const CenterScreen = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
 const SearchContainer = styled.View`
   padding: ${props => props.theme.space[3]};
 `;
 
+const ListContainer = styled.View`
+  flex: 1;
+  padding: ${props => props.theme.space[3]};
+`;
 type RestaurantsScreenProps = {};
 
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
   const { state, fetchRestaurants, resetRestaurants } = useContext(RestaurantsContext);
-  const [searchQuery, setSearchQuery] = useState('');
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       // console.log('RestaurantsScreen.tsx', 'fetching restaurants');
-      fetchRestaurants();
+      // fetchRestaurants();
     }
 
     return () => {
-      resetRestaurants();
+      // resetRestaurants();
     };
   }, [isFocused]);
 
   return (
-    <View style={styles.screen}>
+    <Screen>
       <SearchContainer>
-        <Searchbar
-          placeholder="Search"
-          onChangeText={setSearchQuery}
-          value={searchQuery}
-          style={styles.searchBar}
-        />
+        <SearchRestaurant />
       </SearchContainer>
-      <View style={styles.list}>
+      <ListContainer>
         {state.isLoading ? (
-          <View
-            style={[
-              styles.screen,
-              {
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-            ]}>
+          <CenterScreen>
             <ActivityIndicator />
-          </View>
+          </CenterScreen>
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -60,8 +60,8 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
             renderItem={({ item }) => <SingleRestaurantCard key={item.name} restaurant={item} />}
           />
         )}
-      </View>
-    </View>
+      </ListContainer>
+    </Screen>
   );
 };
 
@@ -70,18 +70,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: 'center',
     // justifyContent: 'center',
-  },
-  searchBarContainer: {
-    padding: 15,
-  },
-  searchBar: {
-    borderRadius: 5,
-    // backgroundColor: '#fff',
-  },
-  list: {
-    flex: 1,
-    padding: 16,
-    // backgroundColor: 'blue',
   },
 });
 
