@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Screen } from '../components/common/styles/CommonStyles.ts';
 import MapView, { Callout, Marker } from 'react-native-maps';
 import styled from 'styled-components/native';
@@ -8,6 +8,8 @@ import MapSearch from '../components/MapScreen/MapSearch.tsx';
 import { RestaurantsContext } from '../context/RestaurantsContext.ts';
 import { LocationContext } from '../context/LocationContext.ts';
 import MapCallout from '../components/MapScreen/MapCallout.tsx';
+import { TabsParamsList } from '../types';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 const Map = styled(MapView)`
   flex: 1;
@@ -19,6 +21,7 @@ const MapScreen = ({}: MapScreenProps) => {
   const [latDelta, setLatDelta] = useState(0);
   const { location } = lState;
   const { viewport } = location;
+  const navigation: NavigationProp<TabsParamsList> = useNavigation();
 
   useEffect(() => {
     const northEastLat = viewport.northeast.lat;
@@ -44,7 +47,17 @@ const MapScreen = ({}: MapScreenProps) => {
               longitude: rest.geometry.location.lng,
             }}>
             <Callout>
-              <MapCallout restaurant={rest} />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('RestaurantsNavigator', {
+                    screen: 'RestaurantDetails',
+                    params: {
+                      restaurant: rest,
+                    },
+                  })
+                }>
+                <MapCallout restaurant={rest} />
+              </TouchableOpacity>
             </Callout>
           </Marker>
         ))}
