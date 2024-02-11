@@ -1,10 +1,10 @@
 import * as React from 'react';
 import createDataContext from './createDataContext.tsx';
 import { IAuthContext, IAuthState } from '../interfaces/interfaces.ts';
-import { login } from '../api/authentication.ts';
+import * as authAPI from '../api/authentication.ts';
 import { ActionType } from '../types';
-import { navigate } from '../navigators/RootNavigation.ts';
 import { AuthError } from 'firebase/auth';
+import { navigate } from '../navigators/RootNavigation.ts';
 
 const initialState: IAuthState = {
   user: null,
@@ -13,17 +13,22 @@ const initialState: IAuthState = {
 };
 
 /* REDUCER ACTIONS */
+const SET_LOADING = 'SET_LOADING';
 const ADD_ERROR = 'ADD_ERROR';
 const REMOVE_ERROR = 'REMOVE_ERROR';
 const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
 const SIGNOUT = 'SIGNOUT';
+const SET_USER = 'SET_USER';
 /* /REDUCER ACTIONS */
 
 const authReducer = (state: IAuthState, action: ActionType<any>) => {
   switch (action.type) {
     case ADD_ERROR:
       return { ...state, errorMessage: action.payload };
+
+    case SET_USER:
+      return { ...state, user: action.payload };
 
     case REMOVE_ERROR:
       return { ...state, errorMessage: '' };
@@ -32,34 +37,37 @@ const authReducer = (state: IAuthState, action: ActionType<any>) => {
       return { ...state, user: null, errorMessage: '' };
 
     case SIGNIN_SUCCESS:
+    case SIGNUP_SUCCESS:
       return { ...state, user: action.payload, errorMessage: '', isLoading: false };
 
-    // case SIGNIN_SUCCESS:
-    //   return {...state, token: action.payload, errorMessage: ''};
+    case SET_LOADING:
+      return { ...state, isLoading: action.payload };
 
     default:
       return state;
   }
 };
 
+const beforeRequest = (dispatch: React.Dispatch<any>) => {
+  dispatch({ type: REMOVE_ERROR });
+  dispatch({ type: SET_LOADING, payload: true });
+};
+const afterRequest = (dispatch: React.Dispatch<any>) => {
+  dispatch({ type: SET_LOADING, payload: false });
+};
 const signup = (dispatch: React.Dispatch<any>) => async (email: string, password: string) => {
   try {
-    dispatch({ type: REMOVE_ERROR });
-    // const response = await TrackerServer.post('/signup', {
-    //   email,
-    //   password,
-    // });
-    //
-    // const token = response?.data?.token ?? null;
-    // await AsyncStorage.setItem('token', token);
-    // dispatch({ type: SIGNUP_SUCCESS, payload: response?.data?.token ?? null });
-  } catch (err: any) {
-    console.log(err);
-    console.log(err.response.data);
+    beforeRequest(dispatch);
+    const user = await authAPI.signup(email, password);
+    afterRequest(dispatch);
+    dispatch({ type: SIGNUP_SUCCESS, payload: user ?? null });
+  } catch (error: unknown) {
+    const errorMessage = firebaseErrorHandler(error);
     dispatch({
       type: ADD_ERROR,
-      payload: err?.response?.data?.error ?? 'Something went wrong',
+      payload: errorMessage,
     });
+    afterRequest(dispatch);
   }
 };
 
@@ -67,52 +75,62 @@ const clearErrorMessage = (dispatch: any) => () => {
   dispatch({ type: REMOVE_ERROR });
 };
 
+// firebase error handler
+const firebaseErrorHandler = (error: unknown): string => {
+  let errorMessage = '';
+  switch ((error as AuthError).code) {
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential':
+    case 'auth/invalid-email':
+      errorMessage = 'Invalid credentials';
+      break;
+
+    default:
+      errorMessage = (error as AuthError)?.message ?? 'Something went wrong';
+  }
+  return errorMessage;
+};
+
 // login user
 const signin = (dispatch: any) => async (email: string, password: string) => {
   try {
-    clearErrorMessage(dispatch)();
-    const user = await login(email, password);
+    beforeRequest(dispatch);
+    const user = await authAPI.login(email, password);
     dispatch({ type: SIGNIN_SUCCESS, payload: user ?? null });
+    afterRequest(dispatch);
   } catch (error: unknown) {
-    let errorMessage = '';
-    switch ((error as AuthError).code) {
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-      case 'auth/invalid-credentials':
-      case 'auth/invalid-email':
-        errorMessage = 'Invalid credentials';
-        break;
-
-      default:
-        errorMessage = `Error signing in: ${
-          (error as AuthError)?.message ?? 'Something went wrong'
-        }`;
-    }
+    const errorMessage = firebaseErrorHandler(error);
     dispatch({
       type: ADD_ERROR,
       payload: errorMessage,
     });
+    afterRequest(dispatch);
   }
 };
 
-const signout = (dispatch: any) => {
-  return async () => {
-    // console.log('signout done');
-    // await AsyncStorage.setItem('token', '');
-    dispatch({ type: SIGNOUT });
-    // navigate('Signin');
-  };
+const signout = (dispatch: any) => async () => {
+  await authAPI.logout();
+  dispatch({ type: SIGNOUT });
 };
 
 const tryLocalSignin = (dispatch: any) => async () => {
-  // if firebase user exists in asyncstorage, dispatch the SIGNIN_SUCCESS action.
-  // const token = await AsyncStorage.getItem('token');
-  // if (token) {
-  //   return dispatch({ type: SIGNIN_SUCCESS, payload: token });
-  // }
-  setTimeout(() => {
-    navigate('Login');
-  }, 500);
+  beforeRequest(dispatch);
+
+  authAPI.retrieveSession(user => {
+    if (user) {
+      dispatch({ type: SET_USER, payload: user });
+    } else {
+      dispatch({ type: SIGNOUT });
+      navigate('Login');
+    }
+    afterRequest(dispatch);
+  });
+
+  // setTimeout(() => {
+  //   navigate('Login');
+  //   afterRequest(dispatch);
+  // }, 500);
 };
 
 const dataContext = createDataContext(

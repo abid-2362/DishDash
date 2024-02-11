@@ -1,19 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useContext } from 'react';
+import AuthForm from '../components/common/AuthForm.tsx';
+import { AuthContext } from '../context/AuthContext.ts';
 
 type SignupScreenProps = {};
-const SignupScreen = ({}: SignupScreenProps) => (
-  <View style={styles.screen}>
-    <Text>Signup Screen</Text>
-  </View>
-);
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const SignupScreen = ({}: SignupScreenProps) => {
+  const { signup } = useContext(AuthContext);
+  return <AuthForm onSubmit={signup} submitTitle={'Register'} route={'Login'} />;
+};
 
 export default SignupScreen;
