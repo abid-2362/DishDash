@@ -17,7 +17,6 @@ import { ThemeProvider } from 'styled-components/native';
 import { theme } from './src/theme';
 import { RestaurantsProvider } from './src/context/RestaurantsContext.ts';
 import { LocationProvider } from './src/context/LocationContext.ts';
-import { FavoritesProvider } from './src/context/FavoritesContext.ts';
 
 import { FirebaseApp, getApps, initializeApp } from 'firebase/app';
 import { firebaseConfig } from './src/utils/firebase.ts';
@@ -63,9 +62,7 @@ const App = () => {
         <AuthProvider>
           <LocationProvider>
             <RestaurantsProvider>
-              <FavoritesProvider>
-                <NavigatorComponent />
-              </FavoritesProvider>
+              <NavigatorComponent />
             </RestaurantsProvider>
           </LocationProvider>
         </AuthProvider>

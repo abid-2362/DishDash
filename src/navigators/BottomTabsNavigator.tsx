@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { TabsParamsList } from '../types';
 import { RouteProp } from '@react-navigation/native';
 import MapScreen from '../screens/MapScreen.tsx';
+import { FavoritesProvider } from '../context/FavoritesContext.ts';
 
 const Tab = createBottomTabNavigator<TabsParamsList>();
 
@@ -28,32 +29,34 @@ const createScreenOptions = ({ route }: { route: RouteProp<TabsParamsList> }) =>
 
 function BottomTabsNavigator() {
   return (
-    <Tab.Navigator screenOptions={createScreenOptions}>
-      <Tab.Screen
-        name={'RestaurantsNavigator'}
-        component={RestaurantsNavigator}
-        options={{
-          title: 'Restaurants Navigator',
-          // tabBarIcon: () => <Icon name={'add'} />,
-        }}
-      />
-      <Tab.Screen
-        name="MapScreen"
-        component={MapScreen}
-        options={{
-          title: 'Map',
-          // tabBarIcon: () => <Icon name={'settings-sharp'} />,
-        }}
-      />
-      <Tab.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
-        options={{
-          title: 'Settings',
-          // tabBarIcon: () => <Icon name={'settings-sharp'} />,
-        }}
-      />
-    </Tab.Navigator>
+    <FavoritesProvider>
+      <Tab.Navigator screenOptions={createScreenOptions}>
+        <Tab.Screen
+          name={'RestaurantsNavigator'}
+          component={RestaurantsNavigator}
+          options={{
+            title: 'Restaurants Navigator',
+            // tabBarIcon: () => <Icon name={'add'} />,
+          }}
+        />
+        <Tab.Screen
+          name="MapScreen"
+          component={MapScreen}
+          options={{
+            title: 'Map',
+            // tabBarIcon: () => <Icon name={'settings-sharp'} />,
+          }}
+        />
+        <Tab.Screen
+          name="SettingsScreen"
+          component={SettingsScreen}
+          options={{
+            title: 'Settings',
+            // tabBarIcon: () => <Icon name={'settings-sharp'} />,
+          }}
+        />
+      </Tab.Navigator>
+    </FavoritesProvider>
   );
 }
 
