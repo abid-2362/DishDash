@@ -1,12 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import { useContext } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import Spacer from '../components/common/Spacer';
-import { emptyFunction, openAppSettings } from '../utils/utils';
+import { openAppSettings } from '../utils/utils';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { AuthContext } from '../context/AuthContext.ts';
 
 interface IAccountScreenProps {}
 
 const SettingsScreen = ({}: IAccountScreenProps) => {
+  const { signout } = useContext(AuthContext);
   return (
     <View style={styles.screen}>
       <Spacer>
@@ -16,7 +19,7 @@ const SettingsScreen = ({}: IAccountScreenProps) => {
         </View>
       </Spacer>
       <Spacer>
-        <Button title={'Logout'} onPress={emptyFunction} />
+        <Button title={'Logout'} onPress={signout} />
       </Spacer>
     </View>
   );

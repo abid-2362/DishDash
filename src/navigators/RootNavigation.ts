@@ -1,13 +1,13 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { TabsParamsList } from '../types';
+import { MainNavigatorParamsList } from '../types';
 
-export const navigationRef = createNavigationContainerRef<TabsParamsList>();
+export const navigationRef = createNavigationContainerRef<MainNavigatorParamsList>();
 
-export function navigate<RouteName extends keyof TabsParamsList>(
+export function navigate<RouteName extends keyof MainNavigatorParamsList>(
   ...args: RouteName extends unknown
-    ? undefined extends TabsParamsList[RouteName]
-      ? [screen: RouteName] | [screen: RouteName, params: TabsParamsList[RouteName]]
-      : [screen: RouteName, params: TabsParamsList[RouteName]]
+    ? undefined extends MainNavigatorParamsList[RouteName]
+      ? [screen: RouteName] | [screen: RouteName, params: MainNavigatorParamsList[RouteName]]
+      : [screen: RouteName, params: MainNavigatorParamsList[RouteName]]
     : never
 ) {
   if (navigationRef.isReady()) {

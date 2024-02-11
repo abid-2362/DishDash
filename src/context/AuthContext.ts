@@ -1,12 +1,15 @@
 import * as React from 'react';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import TrackerServer from '../api/tracker.ts';
 import createDataContext from './createDataContext.tsx';
 import { IAuthContext, IAuthState } from '../interfaces/interfaces.ts';
+import { login } from '../api/authentication.ts';
+import { ActionType } from '../types';
 import { navigate } from '../navigators/RootNavigation.ts';
+import { AuthError } from 'firebase/auth';
+
 const initialState: IAuthState = {
-  token: null,
+  user: null,
   errorMessage: '',
+  isLoading: false,
 };
 
 /* REDUCER ACTIONS */
@@ -17,7 +20,7 @@ const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
 const SIGNOUT = 'SIGNOUT';
 /* /REDUCER ACTIONS */
 
-const authReducer = (state: any, action: any) => {
+const authReducer = (state: IAuthState, action: ActionType<any>) => {
   switch (action.type) {
     case ADD_ERROR:
       return { ...state, errorMessage: action.payload };
@@ -26,12 +29,10 @@ const authReducer = (state: any, action: any) => {
       return { ...state, errorMessage: '' };
 
     case SIGNOUT:
-      console.log('nullifying token');
-      return { ...state, token: null };
+      return { ...state, user: null, errorMessage: '' };
 
-    case SIGNUP_SUCCESS:
     case SIGNIN_SUCCESS:
-      return { ...state, token: action.payload, errorMessage: '' };
+      return { ...state, user: action.payload, errorMessage: '', isLoading: false };
 
     // case SIGNIN_SUCCESS:
     //   return {...state, token: action.payload, errorMessage: ''};
@@ -41,7 +42,7 @@ const authReducer = (state: any, action: any) => {
   }
 };
 
-const signup = (dispatch: any) => async (email: string, password: string) => {
+const signup = (dispatch: React.Dispatch<any>) => async (email: string, password: string) => {
   try {
     dispatch({ type: REMOVE_ERROR });
     // const response = await TrackerServer.post('/signup', {
@@ -65,23 +66,31 @@ const signup = (dispatch: any) => async (email: string, password: string) => {
 const clearErrorMessage = (dispatch: any) => () => {
   dispatch({ type: REMOVE_ERROR });
 };
+
+// login user
 const signin = (dispatch: any) => async (email: string, password: string) => {
   try {
     clearErrorMessage(dispatch)();
-    // const response = await TrackerServer.post('/signin', {
-    //   email,
-    //   password,
-    // });
-    //
-    // const token = response?.data?.token ?? null;
-    // await AsyncStorage.setItem('token', token);
-    // dispatch({ type: SIGNIN_SUCCESS, payload: response?.data?.token ?? null });
-  } catch (err: any) {
-    console.log(err);
-    console.log(err.response.data);
+    const user = await login(email, password);
+    dispatch({ type: SIGNIN_SUCCESS, payload: user ?? null });
+  } catch (error: unknown) {
+    let errorMessage = '';
+    switch ((error as AuthError).code) {
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+      case 'auth/invalid-credentials':
+      case 'auth/invalid-email':
+        errorMessage = 'Invalid credentials';
+        break;
+
+      default:
+        errorMessage = `Error signing in: ${
+          (error as AuthError)?.message ?? 'Something went wrong'
+        }`;
+    }
     dispatch({
       type: ADD_ERROR,
-      payload: err?.response?.data?.error ?? 'Something went wrong',
+      payload: errorMessage,
     });
   }
 };
@@ -96,11 +105,14 @@ const signout = (dispatch: any) => {
 };
 
 const tryLocalSignin = (dispatch: any) => async () => {
+  // if firebase user exists in asyncstorage, dispatch the SIGNIN_SUCCESS action.
   // const token = await AsyncStorage.getItem('token');
   // if (token) {
   //   return dispatch({ type: SIGNIN_SUCCESS, payload: token });
   // }
-  // navigate('Signin');
+  setTimeout(() => {
+    navigate('Login');
+  }, 500);
 };
 
 const dataContext = createDataContext(

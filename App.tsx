@@ -19,6 +19,22 @@ import { RestaurantsProvider } from './src/context/RestaurantsContext.ts';
 import { LocationProvider } from './src/context/LocationContext.ts';
 import { FavoritesProvider } from './src/context/FavoritesContext.ts';
 
+import { FirebaseApp, getApps, initializeApp } from 'firebase/app';
+import { firebaseConfig } from './src/utils/firebase.ts';
+import { Auth, getReactNativePersistence, initializeAuth } from 'firebase/auth';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
+// firebase initialization
+let app: FirebaseApp;
+const apps = getApps();
+let auth: Auth;
+if (!apps || !apps.length) {
+  app = initializeApp(firebaseConfig);
+  auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+  });
+}
+
 function NavigatorComponent() {
   const isDarkMode = useColorScheme() === 'dark';
 

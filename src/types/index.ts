@@ -12,7 +12,19 @@ export type TabsParamsList = {
   SettingsScreen: undefined;
 };
 
-export type RootParamsList = RestaurantsParamsList & TabsParamsList;
+export type UnauthorizedParamsList = {
+  ResolveAuth: undefined;
+  Login: undefined;
+  Signup: undefined;
+};
+
+export type AuthorizedParamsList = {
+  BottomTabsNavigator: TabsParamsList;
+};
+
+export type MainNavigatorParamsList = AuthorizedParamsList & UnauthorizedParamsList;
+
+// export type RootParamsList = RestaurantsParamsList & TabsParamsList;
 
 export type ActionType<PayloadType> = {
   type: string;

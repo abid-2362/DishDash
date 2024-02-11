@@ -1,20 +1,25 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
 import { useContext, useEffect } from 'react';
+import { Button, StyleSheet, View } from 'react-native';
+import { Text } from '../components/common/Text.tsx';
 import { AuthContext } from '../context/AuthContext';
+import { UnauthorizedParamsList } from '../types';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 interface IResolveAuthScreenProps {}
 
 const ResolveAuthScreen = ({}: IResolveAuthScreenProps) => {
   const { tryLocalSignin } = useContext(AuthContext);
+  const navigation: NavigationProp<UnauthorizedParamsList> = useNavigation();
   useEffect(() => {
     tryLocalSignin();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <View style={styles.screen}>
-      <Text>Loading...</Text>
+      <Text variant={'body'}>DishDash is loading</Text>
+      <Text variant={'caption'}>Checking for your login credentials...</Text>
+      <Button title={'Login'} />
     </View>
   );
 };
