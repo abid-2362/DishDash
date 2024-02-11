@@ -12,6 +12,7 @@ import { FavoritesContext } from '../context/FavoritesContext.ts';
 import FavoritesBar from '../components/FavoritesBar.tsx';
 import Spacer from '../components/common/Spacer.tsx';
 import { errorHandler } from '../utils/utils.ts';
+import { AuthContext } from '../context/AuthContext.ts';
 
 const Screen = styled.View`
   flex: 1;
@@ -32,6 +33,7 @@ const ListContainer = styled.View`
 type RestaurantsScreenProps = {};
 
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
+  const { state: aState } = useContext(AuthContext);
   const { state } = useContext(RestaurantsContext);
   const navigation: NavigationProp<RestaurantsParamsList> = useNavigation();
   const { state: fState, saveFavorites, loadFavorites } = useContext(FavoritesContext);
@@ -42,11 +44,16 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
   };
 
   useEffect(() => {
-    loadFavorites().catch(errorHandler);
-  }, []);
+    if (aState.user) {
+      console.log('RestaurantsScreen.tsx', aState.user);
+      loadFavorites(aState.user.uid).catch(errorHandler);
+    }
+  }, [aState.user]);
 
   useEffect(() => {
-    saveFavorites(fState.favorites).catch(errorHandler);
+    if (aState.user) {
+      saveFavorites(fState.favorites, aState.user.uid).catch(errorHandler);
+    }
   }, [fState.favorites]);
   return (
     <Screen>

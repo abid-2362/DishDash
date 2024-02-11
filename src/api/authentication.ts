@@ -6,18 +6,25 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   User,
-  UserCredential,
-} from 'firebase/auth';
+} from 'firebase/auth'; // import firebase from 'firebase/compat';
 // import firebase from 'firebase/compat';
 
 const auth = getAuth();
 
-export const login = (email: string, password: string): Promise<UserCredential> => {
-  return signInWithEmailAndPassword(auth, email, password);
+export const login = (email: string, password: string): Promise<User> => {
+  return new Promise((resolve, reject) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(user => resolve(user.user))
+      .catch(err => reject(err));
+  });
 };
 
-export const signup = (email: string, password: string): Promise<UserCredential> => {
-  return createUserWithEmailAndPassword(auth, email, password);
+export const signup = (email: string, password: string): Promise<User> => {
+  return new Promise((resolve, reject) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(user => resolve(user.user))
+      .catch(err => reject(err));
+  });
 };
 
 export const retrieveSession = (callback: (user: User | null) => void) => {

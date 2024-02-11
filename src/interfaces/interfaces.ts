@@ -1,12 +1,12 @@
 import { ThemeType } from '../theme';
 import { Restaurant } from '../types';
-import { UserCredential } from 'firebase/auth';
+import { User } from 'firebase/auth';
 
 export type emptyFunction = () => void;
 export type optionalCallbackFunction = (onSuccess?: emptyFunction) => void;
 
 export interface IAuthState {
-  user: UserCredential | null;
+  user: User | null;
   errorMessage: string;
   isLoading: boolean;
 }

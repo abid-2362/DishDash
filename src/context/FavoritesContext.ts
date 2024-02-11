@@ -12,8 +12,8 @@ interface IFavoritesContext {
   state: IFavoritesState;
   addFavorite: (restaurant: Restaurant) => void;
   removeFavorite: (id: string) => void;
-  saveFavorites: (restaurant: Restaurant[]) => Promise<void>;
-  loadFavorites: () => Promise<void>;
+  saveFavorites: (restaurant: Restaurant[], uid: string) => Promise<void>;
+  loadFavorites: (uid: string) => Promise<void>;
 }
 
 const initialState: IFavoritesState = {
@@ -73,27 +73,30 @@ const removeFavorite = (dispatch: any) => (id: string) => {
 };
 
 // save favorites to async storage
-const saveFavorites = (dispatch: React.Dispatch<any>) => async (favorites: Restaurant[]) => {
-  try {
-    await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const loadFavorites = (dispatch: React.Dispatch<any>) => async (): Promise<void> => {
-  try {
-    let favoritesArr = [];
-    const favorites = await AsyncStorage.getItem('favorites');
-    if (!favorites) {
-      return;
+const saveFavorites =
+  (dispatch: React.Dispatch<any>) => async (favorites: Restaurant[], uid: string) => {
+    try {
+      await AsyncStorage.setItem(`@favorites-${uid}`, JSON.stringify(favorites));
+    } catch (error) {
+      console.log(error);
     }
-    favoritesArr = JSON.parse(favorites);
-    dispatch({ type: SET_FAVORITES, payload: favoritesArr });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
+
+const loadFavorites =
+  (dispatch: React.Dispatch<any>) =>
+  async (uid: string): Promise<void> => {
+    try {
+      let favoritesArr = [];
+      const favorites = await AsyncStorage.getItem(`@favorites-${uid}`);
+      if (!favorites) {
+        return;
+      }
+      favoritesArr = JSON.parse(favorites);
+      dispatch({ type: SET_FAVORITES, payload: favoritesArr });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 const dataContext = createDataContext(
   favoritesReducer,
