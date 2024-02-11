@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
-import { useContext } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
 import styled from 'styled-components/native';
@@ -8,6 +8,10 @@ import { RestaurantsContext } from '../context/RestaurantsContext.ts';
 import SearchRestaurant from '../components/RestaurantScreen/SearchRestaurant.tsx';
 import { RestaurantsParamsList } from '../types';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { FavoritesContext } from '../context/FavoritesContext.ts';
+import FavoritesBar from '../components/FavoritesBar.tsx';
+import Spacer from '../components/common/Spacer.tsx';
+import { errorHandler } from '../utils/utils.ts';
 
 const Screen = styled.View`
   flex: 1;
@@ -30,12 +34,30 @@ type RestaurantsScreenProps = {};
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
   const { state } = useContext(RestaurantsContext);
   const navigation: NavigationProp<RestaurantsParamsList> = useNavigation();
+  const { state: fState, saveFavorites, loadFavorites } = useContext(FavoritesContext);
+  const [showFavorites, setShowFavorites] = useState(false);
 
+  const showFavoritesToggle = () => {
+    setShowFavorites(prev => !prev);
+  };
+
+  useEffect(() => {
+    loadFavorites().catch(errorHandler);
+  }, []);
+
+  useEffect(() => {
+    saveFavorites(fState.favorites).catch(errorHandler);
+  }, [fState.favorites]);
   return (
     <Screen>
       <SearchContainer>
-        <SearchRestaurant />
+        <SearchRestaurant onFavoritesToggle={showFavoritesToggle} showFavorites={showFavorites} />
       </SearchContainer>
+      {showFavorites && (
+        <Spacer size={'large'} position={'left'}>
+          <FavoritesBar favorites={fState.favorites} navigation={navigation} />
+        </Spacer>
+      )}
       <ListContainer>
         {state.isLoading ? (
           <CenterScreen>

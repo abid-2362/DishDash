@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '../../theme';
 
 type SpacerProps = {
   size?: 'small' | 'medium' | 'large';
-  position?: 'top' | 'left' | 'right' | 'bottom';
+  position?: 'top' | 'left' | 'right' | 'bottom' | 'all' | 'horizontal' | 'vertical';
   children?: React.ReactNode;
 };
 
@@ -24,6 +24,22 @@ const Spacer: React.FC<SpacerProps> = ({ size = 'medium', position = 'bottom', c
         break;
       case 'bottom':
         spacerStyle = { marginBottom: getSize(size) };
+        break;
+
+      case 'vertical':
+        spacerStyle = { marginBottom: getSize(size), marginTop: getSize(size) };
+        break;
+
+      case 'horizontal':
+        spacerStyle = { marginLeft: getSize(size), marginRight: getSize(size) };
+        break;
+
+      case 'all':
+        spacerStyle = { margin: getSize(size) };
+        break;
+
+      default:
+        spacerStyle = { margin: getSize(size) };
         break;
     }
 

@@ -98,7 +98,6 @@ const onSearch = (dispatch: React.Dispatch<ActionType<any>>) => async (searchTer
     const result = await locationAPI.fetchLocation(searchTerm.toLowerCase());
     setLocation(dispatch)(result);
     // now we have the location, we need to fetch the restaurants based on this location
-    console.log('LocationContext.ts', 'result', result);
     dispatch({ type: SET_LOADING, payload: false });
   } catch (error) {
     let err;

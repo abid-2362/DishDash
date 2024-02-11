@@ -11,8 +11,11 @@ import { getLatLngStringFromLocation } from '../../api/locations.ts';
 const Search = styled(Searchbar)`
   border-radius: ${props => props.theme.space[1]};
 `;
-type SearchRestaurantProps = {};
-const SearchRestaurant = ({}: SearchRestaurantProps) => {
+type SearchRestaurantProps = {
+  onFavoritesToggle: () => void;
+  showFavorites: boolean;
+};
+const SearchRestaurant = ({ onFavoritesToggle, showFavorites }: SearchRestaurantProps) => {
   const { state, onSearch } = useContext(LocationContext);
   const { fetchRestaurants, resetRestaurants } = useContext(RestaurantsContext);
   const [searchQuery, setSearchQuery] = useState<string>(state.keyword);
@@ -45,6 +48,10 @@ const SearchRestaurant = ({}: SearchRestaurantProps) => {
   return (
     <>
       <Search
+        icon={showFavorites ? 'heart' : 'heart-outline'}
+        onIconPress={() => {
+          onFavoritesToggle();
+        }}
         placeholder="Search"
         onChangeText={setSearchQuery}
         value={searchQuery}

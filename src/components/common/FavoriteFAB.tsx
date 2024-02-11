@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useContext } from 'react';
-import { StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Restaurant } from '../../types';
@@ -21,7 +20,6 @@ const FavoriteFAB = ({ restaurant }: FavoriteProps) => {
     addFavorite,
     removeFavorite,
   } = useContext(FavoritesContext);
-  console.log('FavoriteFAB.tsx', favorites);
   const isFavorite = favorites.find(f => {
     return f.id === restaurant.id;
   });
@@ -34,13 +32,5 @@ const FavoriteFAB = ({ restaurant }: FavoriteProps) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default FavoriteFAB;
