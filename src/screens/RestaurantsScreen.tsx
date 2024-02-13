@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
 import styled from 'styled-components/native';
 import { RestaurantsContext } from '../context/RestaurantsContext.ts';
 import SearchRestaurant from '../components/RestaurantScreen/SearchRestaurant.tsx';
@@ -13,6 +11,7 @@ import FavoritesBar from '../components/FavoritesBar.tsx';
 import Spacer from '../components/common/Spacer.tsx';
 import { errorHandler } from '../utils/utils.ts';
 import { AuthContext } from '../context/AuthContext.ts';
+import RestaurantsList from '../components/common/RestaurantsList.tsx';
 
 const Screen = styled.View`
   flex: 1;
@@ -45,7 +44,6 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
 
   useEffect(() => {
     if (aState.user) {
-      console.log('RestaurantsScreen.tsx', aState.user);
       loadFavorites(aState.user.uid).catch(errorHandler);
     }
   }, [aState.user]);
@@ -71,17 +69,7 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
             <ActivityIndicator />
           </CenterScreen>
         ) : (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            data={state.restaurants}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('RestaurantDetails', { restaurant: item })}>
-                <SingleRestaurantCard key={item.name} restaurant={item} />
-              </TouchableOpacity>
-            )}
-          />
+          <RestaurantsList restaurants={state.restaurants} />
         )}
       </ListContainer>
     </Screen>

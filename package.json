@@ -8,11 +8,12 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "podinstall": "cd ios && arch -arm64 bundle exec pod install && cd ..",
-    "dev": "yarn podinstall && yarn ios"
+    "pods": "cd ios && arch -arm64 bundle exec pod install && cd ..",
+    "dev": "yarn pods && yarn ios"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.21.0",
+    "@react-native-camera-roll/camera-roll": "^7.4.1",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
@@ -30,6 +31,7 @@
     "react-native-screens": "^3.29.0",
     "react-native-svg": "^14.1.0",
     "react-native-vector-icons": "^10.0.3",
+    "react-native-vision-camera": "^3.8.2",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {

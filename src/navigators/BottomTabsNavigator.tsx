@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import SettingsScreen from '../screens/SettingsScreen.tsx';
 import RestaurantsNavigator from './RestaurantsNavigator.tsx';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TabsParamsList } from '../types';
 import { RouteProp } from '@react-navigation/native';
 import MapScreen from '../screens/MapScreen.tsx';
 import { FavoritesProvider } from '../context/FavoritesContext.ts';
+import SettingsNavigator from './SettingsNavigator.tsx';
 
 const Tab = createBottomTabNavigator<TabsParamsList>();
 
 const TAB_ICON = {
   RestaurantsNavigator: 'restaurant',
   MapScreen: 'map',
-  SettingsScreen: 'settings',
+  SettingsNavigator: 'settings',
 };
 
 const createScreenOptions = ({ route }: { route: RouteProp<TabsParamsList> }) => {
@@ -48,8 +48,8 @@ function BottomTabsNavigator() {
           }}
         />
         <Tab.Screen
-          name="SettingsScreen"
-          component={SettingsScreen}
+          name="SettingsNavigator"
+          component={SettingsNavigator}
           options={{
             title: 'Settings',
             // tabBarIcon: () => <Icon name={'settings-sharp'} />,

@@ -43,11 +43,10 @@ const variants = {
 
 type Variant = keyof typeof variants;
 
-export const Text = styled.Text<{ variant: Variant }>`
+export const Text = styled.Text<{ variant?: Variant }>`
   ${({ theme }) => defaultTextStyles(theme)}
   ${({ variant, theme }) => {
-    // if variant is not in variants return body
-    if (!variants[variant]) {
+    if (!variant || !variants[variant]) {
       return body(theme);
     }
     return variants[variant](theme);

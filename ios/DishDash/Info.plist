@@ -8,6 +8,12 @@
 	<string>DishDash</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) needs access to your Camera to capture your profile photo.</string>
+
+    <!-- optionally, if you want to record audio: -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>$(PRODUCT_NAME) needs access to your Microphone to record audio when you turn on the camera.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

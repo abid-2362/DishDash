@@ -19,3 +19,14 @@ export const CustomScreenContainer = styled.View`
 export const Row = styled.View`
   flex-direction: row;
 `;
+
+export const RowSpaceBetween = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const CenterContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+`;

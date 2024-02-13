@@ -6,10 +6,16 @@ export type RestaurantsParamsList = {
   RestaurantDetails: { restaurant: Restaurant };
 };
 
+export type SettingsParamsList = {
+  Settings: undefined;
+  Favorites: undefined;
+  Camera: undefined;
+};
+
 export type TabsParamsList = {
   RestaurantsNavigator: NavigatorScreenParams<RestaurantsParamsList>;
   MapScreen: undefined;
-  SettingsScreen: undefined;
+  SettingsNavigator: SettingsParamsList;
 };
 
 export type UnauthorizedParamsList = {
@@ -19,7 +25,7 @@ export type UnauthorizedParamsList = {
 };
 
 export type AuthorizedParamsList = {
-  BottomTabsNavigator: TabsParamsList;
+  BottomTabsNavigator: NavigatorScreenParams<TabsParamsList>;
 };
 
 export type MainNavigatorParamsList = AuthorizedParamsList & UnauthorizedParamsList;
