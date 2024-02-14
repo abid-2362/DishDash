@@ -8,12 +8,14 @@ import MapScreen from '../screens/MapScreen.tsx';
 import { FavoritesProvider } from '../context/FavoritesContext.ts';
 import SettingsNavigator from './SettingsNavigator.tsx';
 import { colors } from '../theme/colors.ts';
+import CartNavigator from './CartNavigator.tsx';
 
 const Tab = createBottomTabNavigator<TabsParamsList>();
 
 const TAB_ICON = {
   RestaurantsNavigator: 'restaurant',
   MapScreen: 'map',
+  CartNavigator: 'cart',
   SettingsNavigator: 'settings',
 };
 
@@ -45,6 +47,14 @@ function BottomTabsNavigator() {
           component={MapScreen}
           options={{
             title: 'Map',
+            // tabBarIcon: () => <Icon name={'settings-sharp'} />,
+          }}
+        />
+        <Tab.Screen
+          name="CartNavigator"
+          component={CartNavigator}
+          options={{
+            title: 'Cart',
             // tabBarIcon: () => <Icon name={'settings-sharp'} />,
           }}
         />

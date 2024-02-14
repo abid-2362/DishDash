@@ -15,7 +15,14 @@ export type SettingsParamsList = {
 export type TabsParamsList = {
   RestaurantsNavigator: NavigatorScreenParams<RestaurantsParamsList>;
   MapScreen: undefined;
+  CartNavigator: NavigatorScreenParams<CartParamsList>;
   SettingsNavigator: SettingsParamsList;
+};
+
+export type CartParamsList = {
+  CartScreen: undefined;
+  CheckoutSuccess: undefined;
+  CheckoutError: undefined;
 };
 
 export type UnauthorizedParamsList = {
