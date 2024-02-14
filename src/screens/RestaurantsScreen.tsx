@@ -60,11 +60,7 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
       <SearchContainer>
         <SearchRestaurant onFavoritesToggle={showFavoritesToggle} showFavorites={showFavorites} />
       </SearchContainer>
-      {showFavorites && (
-        <Spacer size={'large'} position={'left'}>
-          <FavoritesBar favorites={fState.favorites} navigation={navigation} />
-        </Spacer>
-      )}
+      {showFavorites && <FavoritesBar favorites={fState.favorites} navigation={navigation} />}
       {!lState.errorMessage && (
         <ListContainer>
           {state.isLoading ? (

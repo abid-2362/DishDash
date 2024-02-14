@@ -13,6 +13,7 @@ const CompactImage = styled.Image`
 const Container = styled.View`
   align-items: center;
   justify-content: center;
+  max-width: 150px;
 `;
 
 type MapCalloutProps = {
@@ -21,7 +22,9 @@ type MapCalloutProps = {
 const MapCallout = ({ restaurant }: MapCalloutProps) => (
   <Container>
     <CompactImage source={{ uri: restaurant.photos[0] }} />
-    <Text>{restaurant.name}</Text>
+    <Text style={{ maxWidth: '100%' }} numberOfLines={1}>
+      {restaurant.name}
+    </Text>
   </Container>
 );
 
