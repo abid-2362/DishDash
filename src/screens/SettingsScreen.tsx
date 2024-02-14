@@ -48,7 +48,7 @@ const SettingsScreen = ({}: IAccountScreenProps) => {
             <Avatar.Icon
               size={180}
               icon={'human'}
-              style={{ backgroundColor: colors.brand.secondary }}
+              style={{ backgroundColor: colors.brand.primary }}
             />
           )}
         </TouchableOpacity>
@@ -70,7 +70,12 @@ const SettingsScreen = ({}: IAccountScreenProps) => {
       <Spacer>
         <RowSpaceBetween>
           <Text variant={'body'}>App Settings</Text>
-          <Icon name={'settings'} size={18} onPress={openAppSettings} />
+          <Icon
+            name={'settings'}
+            color={colors.brand.primary}
+            size={18}
+            onPress={openAppSettings}
+          />
         </RowSpaceBetween>
       </Spacer>
       <Spacer size={'large'} position={'vertical'}>

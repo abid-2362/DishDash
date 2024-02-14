@@ -5,6 +5,8 @@ import styled from 'styled-components/native';
 import { LocationContext } from '../../context/LocationContext.ts';
 import { RestaurantsContext } from '../../context/RestaurantsContext.ts';
 import { Text } from '../common/Text.tsx';
+import { getLatLngStringFromLocation } from '../../api/locations.ts';
+import { errorHandler } from '../../utils/utils.ts';
 
 const Search = styled(Searchbar)`
   border-radius: ${props => props.theme.space[1]};
@@ -17,7 +19,7 @@ const MapSearch = ({}: MapSearchProps) => {
   const [searchQuery, setSearchQuery] = useState<string>(state.keyword);
 
   const searchHandler = () => {
-    onSearch(searchQuery);
+    onSearch(searchQuery).catch(errorHandler);
   };
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const MapSearch = ({}: MapSearchProps) => {
 
   useEffect(() => {
     // fetch restaurants everytime the location changes
-    fetchRestaurants(state.location);
+    fetchRestaurants(getLatLngStringFromLocation(state.location)).catch(errorHandler);
 
     return () => {
       resetRestaurants();

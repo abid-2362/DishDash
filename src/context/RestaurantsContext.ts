@@ -50,25 +50,23 @@ const setIsLoading = (dispatch: any, isLoading: boolean) => {
 const resetRestaurants = (dispatch: any) => () => {
   dispatch({ type: SET_RESTURANTS, payload: [] });
 };
-const fetchRestaurants = (dispatch: any) => async (location: string) => {
-  try {
-    setIsLoading(dispatch, true);
-    clearErrorMessage(dispatch)();
+const fetchRestaurants = (dispatch: any) => {
+  return async (location: string): Promise<void> => {
+    try {
+      setIsLoading(dispatch, true);
+      clearErrorMessage(dispatch)();
 
-    setTimeout(async () => {
       const response = await restaurantApi.fetchRestaurants(location);
       dispatch({ type: SET_RESTURANTS, payload: response });
       setIsLoading(dispatch, false);
-    }, 1000);
-  } catch (err: any) {
-    console.log(err);
-    console.log(err.response.data);
-    dispatch({
-      type: ADD_ERROR,
-      payload: err?.response?.data?.error ?? 'Something went wrong',
-    });
-    setIsLoading(dispatch, false);
-  }
+    } catch (err: any) {
+      dispatch({
+        type: ADD_ERROR,
+        payload: err?.response?.data?.error ?? 'Something went wrong',
+      });
+      setIsLoading(dispatch, false);
+    }
+  };
 };
 
 const dataContext = createDataContext(

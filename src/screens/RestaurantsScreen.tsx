@@ -12,6 +12,7 @@ import Spacer from '../components/common/Spacer.tsx';
 import { errorHandler } from '../utils/utils.ts';
 import { AuthContext } from '../context/AuthContext.ts';
 import RestaurantsList from '../components/common/RestaurantsList.tsx';
+import { LocationContext } from '../context/LocationContext.ts';
 
 const Screen = styled.View`
   flex: 1;
@@ -32,6 +33,7 @@ const ListContainer = styled.View`
 type RestaurantsScreenProps = {};
 
 const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
+  const { state: lState } = useContext(LocationContext);
   const { state: aState } = useContext(AuthContext);
   const { state } = useContext(RestaurantsContext);
   const navigation: NavigationProp<RestaurantsParamsList> = useNavigation();
@@ -63,15 +65,17 @@ const RestaurantsScreen = ({}: RestaurantsScreenProps) => {
           <FavoritesBar favorites={fState.favorites} navigation={navigation} />
         </Spacer>
       )}
-      <ListContainer>
-        {state.isLoading ? (
-          <CenterScreen>
-            <ActivityIndicator />
-          </CenterScreen>
-        ) : (
-          <RestaurantsList restaurants={state.restaurants} />
-        )}
-      </ListContainer>
+      {!lState.errorMessage && (
+        <ListContainer>
+          {state.isLoading ? (
+            <CenterScreen>
+              <ActivityIndicator />
+            </CenterScreen>
+          ) : (
+            <RestaurantsList restaurants={state.restaurants} />
+          )}
+        </ListContainer>
+      )}
     </Screen>
   );
 };

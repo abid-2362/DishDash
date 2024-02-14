@@ -14,7 +14,7 @@ interface ILocationState {
 
 interface ILocationContext {
   state: ILocationState;
-  onSearch: (keyword: string) => void;
+  onSearch: (keyword: string) => Promise<void>;
   setLocation: (location: string) => void;
 }
 
@@ -86,31 +86,33 @@ const setLocation = (dispatch: React.Dispatch<ActionType<Location>>) => (locatio
   dispatch({ type: SET_LOCATION, payload: location });
 };
 
-const onSearch = (dispatch: React.Dispatch<ActionType<any>>) => async (searchTerm: string) => {
-  if (!searchTerm) {
-    return;
-  }
-  dispatch({ type: SET_LOADING, payload: true });
-  dispatch({ type: SET_KEYWORD, payload: searchTerm });
-  clearErrorMessage(dispatch)();
-  try {
-    // locationRequest
-    const result = await locationAPI.fetchLocation(searchTerm.toLowerCase());
-    setLocation(dispatch)(result);
-    // now we have the location, we need to fetch the restaurants based on this location
-    dispatch({ type: SET_LOADING, payload: false });
-  } catch (error) {
-    let err;
-    if (error && (error as any).message) {
-      err = (error as any).message;
-    } else {
-      err = String(error);
-      console.log('LocationContext.ts', 'error', err);
+const onSearch = (dispatch: React.Dispatch<ActionType<any>>) => {
+  return async (searchTerm: string): Promise<void> => {
+    if (!searchTerm) {
+      return;
     }
-    // Alert.alert('Error', err);
-    dispatch({ type: SET_LOADING, payload: false });
-    dispatch({ type: ADD_ERROR, payload: err });
-  }
+    dispatch({ type: SET_LOADING, payload: true });
+    dispatch({ type: SET_KEYWORD, payload: searchTerm });
+    clearErrorMessage(dispatch)();
+    try {
+      // locationRequest
+      const result = await locationAPI.fetchLocation(searchTerm.toLowerCase());
+      setLocation(dispatch)(result);
+      // now we have the location, we need to fetch the restaurants based on this location
+      dispatch({ type: SET_LOADING, payload: false });
+    } catch (error) {
+      let err;
+      if (error && (error as any).message) {
+        err = (error as any).message;
+      } else {
+        err = String(error);
+        console.log('LocationContext.ts', 'error', err);
+      }
+      // Alert.alert('Error', err);
+      dispatch({ type: SET_LOADING, payload: false });
+      dispatch({ type: ADD_ERROR, payload: err });
+    }
+  };
 };
 
 const dataContext = createDataContext(

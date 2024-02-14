@@ -7,6 +7,7 @@ import { RouteProp } from '@react-navigation/native';
 import MapScreen from '../screens/MapScreen.tsx';
 import { FavoritesProvider } from '../context/FavoritesContext.ts';
 import SettingsNavigator from './SettingsNavigator.tsx';
+import { colors } from '../theme/colors.ts';
 
 const Tab = createBottomTabNavigator<TabsParamsList>();
 
@@ -20,7 +21,7 @@ const createScreenOptions = ({ route }: { route: RouteProp<TabsParamsList> }) =>
   const iconName = TAB_ICON[route.name];
   return {
     headerShown: false,
-    tabBarActiveTintColor: 'orange',
+    tabBarActiveTintColor: colors.brand.primary,
     tabBarIcon: ({ color, size }: { color: string; size: number }) => (
       <Icon name={iconName} size={size} color={color} />
     ),
