@@ -14,6 +14,7 @@ export const CustomScreenContainer = styled.View`
   flex: 1;
   padding-left: ${props => props.theme.space[3]};
   padding-right: ${props => props.theme.space[3]};
+  width: 100%;
 `;
 
 export const Row = styled.View`

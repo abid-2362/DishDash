@@ -5,6 +5,7 @@ import RestaurantsList from '../components/common/RestaurantsList.tsx';
 import { Appbar } from 'react-native-paper';
 import { SettingsParamsList } from '../types';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import Spacer from '../components/common/Spacer.tsx';
 
 type FavoritesScreenProps = {};
 const FavoritesScreen = ({}: FavoritesScreenProps) => {
@@ -20,7 +21,9 @@ const FavoritesScreen = ({}: FavoritesScreenProps) => {
         />
         <Appbar.Content titleStyle={{ textAlign: 'center' }} title={'Favorites'} />
       </Appbar>
-      <RestaurantsList restaurants={state.favorites} />
+      <Spacer size={'large'} position={'all'}>
+        <RestaurantsList restaurants={state.favorites} />
+      </Spacer>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useCallback, useContext, useState } from 'react';
-import { Avatar, Button, List } from 'react-native-paper';
+import { Avatar, Button, Divider, List } from 'react-native-paper';
 import Spacer from '../components/common/Spacer';
 import { openAppSettings } from '../utils/utils';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,8 +14,22 @@ import {
 import { colors } from '../theme/colors.ts';
 import { SettingsParamsList } from '../types';
 import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BackgroundCover, BackgroundScreen } from '../components/common/styles/FormStyles.ts';
+import styled from 'styled-components/native';
+
+const StyledCover = styled(BackgroundCover)`
+  background-color: rgba(255, 255, 255, 0.5);
+`;
+
+const StyledListItem = styled(List.Item).attrs({
+  titleStyle: { color: colors.brand.primary },
+})`
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: ${props => props.theme.space[3]};
+  border-radius: ${props => props.theme.sizes[0]};
+`;
 
 interface IAccountScreenProps {}
 
@@ -36,60 +50,61 @@ const SettingsScreen = ({}: IAccountScreenProps) => {
     }, [state.user]),
   );
   return (
-    <CustomScreenContainer>
-      <CenterContainer>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Camera');
-          }}>
-          {profilePhoto ? (
-            <Avatar.Image source={{ uri: profilePhoto }} size={180} />
-          ) : (
-            <Avatar.Icon
-              size={180}
-              icon={'human'}
-              style={{ backgroundColor: colors.brand.primary }}
-            />
-          )}
-        </TouchableOpacity>
-        <Spacer position={'vertical'} size={'large'}>
-          <Text variant={'body'}>{!!state.user && state.user.email}</Text>
-        </Spacer>
-      </CenterContainer>
+    <BackgroundScreen>
+      <StyledCover />
+      <CustomScreenContainer>
+        <ScrollView>
+          <Spacer position={'top'} />
+          <CenterContainer>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Camera');
+              }}>
+              {profilePhoto ? (
+                <Avatar.Image source={{ uri: profilePhoto }} size={180} />
+              ) : (
+                <Avatar.Icon
+                  size={180}
+                  icon={'human'}
+                  style={{ backgroundColor: colors.brand.primary }}
+                />
+              )}
+            </TouchableOpacity>
+            <Spacer position={'vertical'} size={'large'}>
+              <Text variant={'body'}>{!!state.user && state.user.email}</Text>
+            </Spacer>
+          </CenterContainer>
 
-      <Spacer>
-        <List.Section>
-          <List.Item
-            title="Favorites"
-            left={() => <List.Icon icon="heart-outline" />}
-            onPress={() => navigation.navigate('Favorites')}
-          />
-        </List.Section>
-      </Spacer>
+          <Spacer>
+            <List.Section>
+              <StyledListItem
+                title="Favorites"
+                left={() => <List.Icon color={colors.brand.primary} icon="heart-outline" />}
+                onPress={() => navigation.navigate('Favorites')}
+              />
+              <Spacer position={'bottom'} size={'small'} />
+              <StyledListItem
+                title="App Settings"
+                left={() => <List.Icon color={colors.brand.primary} icon="cog" />}
+                onPress={openAppSettings}
+              />
+            </List.Section>
+          </Spacer>
 
-      <Spacer>
-        <RowSpaceBetween>
-          <Text variant={'body'}>App Settings</Text>
-          <Icon
-            name={'settings'}
-            color={colors.brand.primary}
-            size={18}
-            onPress={openAppSettings}
-          />
-        </RowSpaceBetween>
-      </Spacer>
-      <Spacer size={'large'} position={'vertical'}>
-        <Button
-          icon={'lock'}
-          buttonColor={colors.brand.primary}
-          textColor={colors.text.inverse}
-          loading={state.isLoading}
-          disabled={state.isLoading}
-          onPress={signout}>
-          Logout
-        </Button>
-      </Spacer>
-    </CustomScreenContainer>
+          <Spacer size={'large'} position={'vertical'}>
+            <Button
+              icon={'lock'}
+              buttonColor={colors.brand.primary}
+              textColor={colors.text.inverse}
+              loading={state.isLoading}
+              disabled={state.isLoading}
+              onPress={signout}>
+              Logout
+            </Button>
+          </Spacer>
+        </ScrollView>
+      </CustomScreenContainer>
+    </BackgroundScreen>
   );
 };
 
