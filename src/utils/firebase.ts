@@ -16,6 +16,7 @@ export const firebaseConfig = {
   measurementId: Config.MEASUREMENT_ID,
 };
 
+console.log('firebase.ts', Config.STRIPE_PUBLISHABLE_KEY);
 // export const app = initializeApp(firebaseConfig);
 // const auth = initializeAuth(app, {
 //   persistence: getReactNativePersistence(ReactNativeAsyncStorage),

@@ -6,7 +6,7 @@ export const BackgroundScreen = styled.ImageBackground.attrs({
   source: require('../../../assets/home_bg.jpg'),
 })`
   flex: 1;
-  justify-content: center;
+  //justify-content: center;
   align-items: center;
 `;
 

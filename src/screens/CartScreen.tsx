@@ -9,6 +9,7 @@ import { Button, List } from 'react-native-paper';
 import { colors } from '../theme/colors.ts';
 import styled from 'styled-components/native';
 import { calculatePrice, calculateSum } from '../utils/utils.ts';
+import CheckoutScreen from './CheckoutScreen.tsx';
 
 const StyledButton = styled(Button)`
   padding: ${props => props.theme.space[1]};
@@ -18,7 +19,7 @@ const StyledButton = styled(Button)`
 `;
 
 type CartScreenProps = {};
-const CartScreen = ({}: CartScreenProps) => {
+const CartScreen2 = ({}: CartScreenProps) => {
   const { state, clearCart } = useContext(CartContext);
 
   const sum = calculateSum(state.items);
@@ -64,6 +65,10 @@ const CartScreen = ({}: CartScreenProps) => {
       </StyledButton>
     </Screen>
   );
+};
+
+const CartScreen = () => {
+  return <CheckoutScreen />;
 };
 
 export default CartScreen;

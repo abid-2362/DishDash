@@ -13,9 +13,20 @@ import {
   FormContainer,
   NavigationAreaContainer,
 } from './styles/FormStyles.ts';
-import { TouchableOpacity } from 'react-native';
+import { Dimensions, TouchableOpacity } from 'react-native';
 import { UnauthorizedParamsList } from '../../types';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import styled from 'styled-components/native';
+import LottieView from 'lottie-react-native';
+
+const dimensions = Dimensions.get('screen');
+const height = dimensions.height;
+
+const StyledLottie = styled(LottieView)`
+  margin-top: ${0.07 * height}px;
+  width: 200px;
+  height: 200px;
+`;
 
 type AuthFormProps = {
   onSubmit: (email: string, password: string) => void;
@@ -41,6 +52,7 @@ const AuthForm = ({ onSubmit, submitTitle = 'Login', route = 'Signup' }: AuthFor
   return (
     <BackgroundScreen>
       <BackgroundCover />
+      <StyledLottie source={require('../../assets/animation.json')} autoPlay loop />
       <FormContainer>
         <Title variant={'body'}>{route !== 'Login' ? 'Login' : 'Register'} to DishDash</Title>
         <Text variant={'error'}>{state.errorMessage}</Text>
