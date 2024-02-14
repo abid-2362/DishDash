@@ -22,6 +22,7 @@ import { FirebaseApp, getApps, initializeApp } from 'firebase/app';
 import { firebaseConfig } from './src/utils/firebase.ts';
 import { Auth, getReactNativePersistence, initializeAuth } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import { CartProvider } from './src/context/CartContext.ts';
 
 // firebase initialization
 let app: FirebaseApp;
@@ -62,7 +63,9 @@ const App = () => {
         <AuthProvider>
           <LocationProvider>
             <RestaurantsProvider>
-              <NavigatorComponent />
+              <CartProvider>
+                <NavigatorComponent />
+              </CartProvider>
             </RestaurantsProvider>
           </LocationProvider>
         </AuthProvider>

@@ -70,3 +70,9 @@ export type Location = {
     southwest: LatLong;
   };
 };
+
+export type Item = {
+  restaurantId: string;
+  name: string;
+  price: number;
+};

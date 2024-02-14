@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Appbar, List, Divider } from 'react-native-paper';
+import { Appbar, List, Divider, Button } from 'react-native-paper';
 import { RestaurantsParamsList } from '../types';
 import { Screen } from '../components/common/styles/CommonStyles.ts';
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
 import { colors } from '../theme/colors.ts';
 import Spacer from '../components/common/Spacer.tsx';
+import { useContext } from 'react';
+import { CartContext } from '../context/CartContext.ts';
 
 type RestaurantDetailsScreenProps = {};
 const RestaurantDetailsScreen = ({}: RestaurantDetailsScreenProps) => {
+  const { addToCart } = useContext(CartContext);
   const route: RouteProp<RestaurantsParamsList, 'RestaurantDetails'> = useRoute();
   const { restaurant } = route.params;
   const navigation: NavigationProp<RestaurantsParamsList> = useNavigation();
@@ -75,6 +78,18 @@ const RestaurantDetailsScreen = ({}: RestaurantDetailsScreenProps) => {
           <Divider />
           <List.Item title="Fanta" />
         </List.Accordion>
+
+        <Spacer size={'large'} position={'all'}>
+          <Button
+            icon={'cart-plus'}
+            buttonColor={colors.brand.primary}
+            textColor={colors.text.inverse}
+            onPress={() =>
+              addToCart({ restaurantId: restaurant.id, name: 'Special', price: 999 }, restaurant)
+            }>
+            Special offer $9.99
+          </Button>
+        </Spacer>
       </ScrollView>
     </Screen>
   );
