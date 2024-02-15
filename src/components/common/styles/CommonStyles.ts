@@ -31,3 +31,9 @@ export const CenterContainer = styled.View`
   align-items: center;
   justify-content: center;
 `;
+
+export const FullScreenCenterContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

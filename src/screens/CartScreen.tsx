@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
 import { useContext } from 'react';
+import { ScrollView, Text } from 'react-native';
+import SingleRestaurantCard from '../components/common/SingleRestaurantCard.tsx';
 import { CartContext } from '../context/CartContext.ts';
 import { Screen } from '../components/common/styles/CommonStyles.ts';
 import Spacer from '../components/common/Spacer.tsx';
 import { Button, List } from 'react-native-paper';
 import { colors } from '../theme/colors.ts';
 import styled from 'styled-components/native';
-import { calculatePrice, calculateSum } from '../utils/utils.ts';
-import CheckoutScreen from './CheckoutScreen.tsx';
+import { calculatePrice, calculateStripeSum, calculateUserSum } from '../utils/utils.ts';
+import useStripePayment from '../hooks/useStripePayment.ts';
 
 const StyledButton = styled(Button)`
   padding: ${props => props.theme.space[1]};
@@ -19,10 +19,11 @@ const StyledButton = styled(Button)`
 `;
 
 type CartScreenProps = {};
-const CartScreen2 = ({}: CartScreenProps) => {
+const CartScreen = ({}: CartScreenProps) => {
   const { state, clearCart } = useContext(CartContext);
-
-  const sum = calculateSum(state.items);
+  const stripeSum = calculateStripeSum(state.items);
+  const userSum = calculateUserSum(state.items);
+  const { loading, openPaymentSheet } = useStripePayment(stripeSum);
 
   if (!state.currentRestaurant) {
     return <Text>No Restaurant</Text>;
@@ -50,11 +51,12 @@ const CartScreen2 = ({}: CartScreenProps) => {
       <StyledButton
         buttonColor={colors.brand.primary}
         textColor={colors.text.inverse}
-        disabled={sum <= 0}
-        // disabled={true}
+        disabled={loading || userSum <= 0}
+        loading={loading}
         mode="contained"
-        icon={'currency-usd'}>
-        Pay {sum}
+        icon={'currency-usd'}
+        onPress={() => openPaymentSheet()}>
+        Pay {userSum}
       </StyledButton>
       <StyledButton
         buttonColor={colors.text.error}
@@ -65,10 +67,6 @@ const CartScreen2 = ({}: CartScreenProps) => {
       </StyledButton>
     </Screen>
   );
-};
-
-const CartScreen = () => {
-  return <CheckoutScreen />;
 };
 
 export default CartScreen;

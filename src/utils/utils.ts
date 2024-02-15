@@ -1,5 +1,6 @@
 import { Linking } from 'react-native';
-import Item from '';
+import { Item } from '../types';
+// import Item from '';
 // import firebase from 'firebase/compat';
 // import Item = firebase.analytics.Item;
 
@@ -10,8 +11,13 @@ export const calculatePrice = (price: number): number => {
   return price / 100;
 };
 
-export const calculateSum = (items: Item[]) => {
+export const calculateStripeSum = (items: Item[]) => {
   const sum = items.reduce((acc, item) => (acc += item.price), 0);
+  return sum;
+};
+
+export const calculateUserSum = (items: Item[]) => {
+  const sum = calculateStripeSum(items);
   return calculatePrice(sum);
 };
 

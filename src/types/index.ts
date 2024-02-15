@@ -22,7 +22,7 @@ export type TabsParamsList = {
 export type CartParamsList = {
   CartScreen: undefined;
   CheckoutSuccess: undefined;
-  CheckoutError: undefined;
+  CheckoutError: { error: string };
 };
 
 export type UnauthorizedParamsList = {
