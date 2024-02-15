@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
 import { Appbar, Avatar } from 'react-native-paper';
 import { FullScreenCenterContainer } from '../components/common/styles/CommonStyles.ts';
 import { Text } from '../components/common/Text.tsx';
@@ -36,13 +35,5 @@ const CheckoutErrorScreen = ({}: CheckoutErrorScreenProps) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default CheckoutErrorScreen;

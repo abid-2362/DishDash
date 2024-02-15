@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
 import { Text } from '../components/common/Text.tsx';
 import { Appbar, Avatar } from 'react-native-paper';
 import { colors } from '../theme/colors.ts';
@@ -33,13 +32,5 @@ const CheckoutSuccessScreen = ({}: CheckoutSuccessScreenProps) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default CheckoutSuccessScreen;
